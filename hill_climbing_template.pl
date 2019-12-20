@@ -42,10 +42,12 @@ insert(MV, [], [MV]).
 
 insert((M, V), [(M1, V1) | MVs], [(M, V), (M1, V1) | MVs]) :- 
     V >= V1.
+
 insert((M, V), [(M1, V1) | MVs], [(M1, V1) | MVs1]) :-
-    V < V1, insert((M, V), MVs, MVs1).
+    V < V1, 
+    insert((M, V), MVs, MVs1).
 
 /*  Testing the Framework */
-test_hill_climb(Problem,Moves)  :-
+test_hill_climb(Problem, Moves)  :-
     initial_state(Problem, State),
     solve_hill_climb(State, [State], Moves).
