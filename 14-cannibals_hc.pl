@@ -15,7 +15,7 @@ solve_hill_climb(State, History, []) :-
 solve_hill_climb(State, History, [Move | Moves]) :-
     hill_climb(State, Move),
     update(State, Move, State1),
-    %legal(State1),
+    legal(State1),
     not(member(State1, History)),
     solve_hill_climb(State1, [State1 | History], Moves).
 
@@ -55,18 +55,12 @@ cannibals(bank(_, C), C).
 missionaries(move(M, C), M).
 cannibals(move(M, C), C).
 
-
 initial_state(mac, mac(l, bank(3, 3), bank(0, 0))).
-final_state(mac(r, bank(ML, CL), bank(MR, CR))) :-
-    ML #=0,
-    CL #=0,
-    MR #=3,
-    CR #=3.
-
+final_state(mac(r, bank(0, 0), bank(3, 3))).
 move(mac(l, L, R), M) :- find_move(L, R, M).
 move(mac(r, L, R), M) :- find_move(R, L, M).
 
-value(mac(_, _, bank(M, C)), M+C).
+value(mac(_, _, bank(M, C)), V) :- V is M+C.
 
 update(mac(D, L, R), M, mac(D1, L1, R1)) :-
     update_direction(D, D1),
@@ -79,24 +73,32 @@ update_people(M, l, L, R, L1, R1) :-
 update_people(M, r, L, R, L1, R1) :-
     update_people_(M, R, L, R1, L1).
 
-update_people_(move(M, C), bank(FM, FC), bank(TM, TC), bank(FM-M, FC-C), bank(FM+M, FC+C)).
-
+update_people_(move(M, C), bank(FM, FC), bank(TM, TC), bank(FM1 , FC1), bank(TM1, TC1)) :-
+    FM1 is FM-M,
+    FC1 is FC-C,
+    TM1 is TM+M,
+    TC1 is TC+C.
 
 
 update_direction(l, r).
 update_direction(r, l).
 
-find_move(From, To, move(M, C)) :-
-    missionaries(From, MF),
-    cannibals(From, CF),
-    MF - M #>= CF - C,
-    MF - M #>= 0,
-    CF - C #>= 0,
-    C + M #=< 2.
+find_move(From, To, move(1, 0)).
+find_move(From, To, move(1, 1)).
+find_move(From, To, move(0, 1)).
+find_move(From, To, move(2, 0)).
+find_move(From, To, move(0, 2)).
 
+legal(mac(_, L, R)) :-
+    legal_bank(L),
+    legal_bank(R).
 
-
-
+legal_bank(bank(M, C)) :-
+    M >= 0,
+    M =< 3,
+    C >= 0,
+    C =< 3,
+    ((M >= C, M > 0); M=0).
 
 /*  Testing the Framework */
 test_hill_climb(Problem, Moves)  :-
