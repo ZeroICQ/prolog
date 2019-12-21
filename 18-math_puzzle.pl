@@ -1,3 +1,6 @@
+:- use_module(library(clpfd)).
+
+
 puzzle1([S, E, N, D], [M, O, R, E], [M, O, N, E ,Y]):-
        Vs = [S, E, N, D, M, O, R, Y],
        Vs ins 0..9, all_different(Vs),
