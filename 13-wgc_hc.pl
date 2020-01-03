@@ -38,12 +38,12 @@ update_items(M, r, L, R, L1, R1) :-
     select_(M, L, L1),
     insert_(M, R, R1).
 
-precedes(w, [g, c]).
+%% precedes(w, [g, c]).
 precedes(w, g).
 precedes(w, c).
-precedes(w, []).
+%% precedes(w, []).
 precedes(g, c).
-precedes(g, []).
+%% precedes(g, []).
 
 insert_(X, [], [X]).
 insert_(X, [H | T], [X, H | T]) :- precedes(X, H).

@@ -42,6 +42,9 @@ update_items(M, r, L, R, L1, R1) :-
 %precedes(_, c).
 %precedes(w, [g, c]).
 precedes(w, g).
+precedes(w, c).
+%% precedes(w, []).
+precedes(g, c).
 %precedes(w, c).
 %precedes(w, []).
 %precedes(g, c).

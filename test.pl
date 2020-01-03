@@ -1,3 +1,3 @@
 :- use_module(library(clpfd)).
 
-k(M, Y) :- M-2  #>= Y.
+k(M, Y) :- Y is M + 2.
